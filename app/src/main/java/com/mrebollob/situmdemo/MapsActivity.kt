@@ -78,7 +78,6 @@ class MapsActivity : FragmentActivity(), OnMapReadyCallback {
 
                     if (BUILDING_ID == building.identifier) {
                         displayFloorImage(building)
-//                        displayPois(building)
                     }
                 }
 
@@ -104,6 +103,7 @@ class MapsActivity : FragmentActivity(), OnMapReadyCallback {
                         Log.i(TAG, "Image loaded")
                         mapImage = bitmap
                         showGroundOverlay(building, floor.scale.toFloat(), bitmap)
+                        displayPois(building)
                     }
 
                     override fun onFailure(error: Error) {
@@ -122,10 +122,9 @@ class MapsActivity : FragmentActivity(), OnMapReadyCallback {
         SitumSdk.communicationManager().fetchIndoorPOIsFromBuilding(building, object : Handler<Collection<Poi>> {
             override fun onSuccess(pois: Collection<Poi>) {
                 map?.clear()
-                pois.forEach {
 
-                    val point = LatLng(it.coordinate.latitude, it.coordinate.longitude)
-
+                for (poi in pois) {
+                    val point = LatLng(poi.coordinate.latitude, poi.coordinate.longitude)
                     map?.addMarker(MarkerOptions()
                             .position(point))
                 }
