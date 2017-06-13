@@ -1,0 +1,131 @@
+<?xml version="1.0" encoding="utf-8"?>
+<items version="2" >
+
+    <item
+        is-multidex="true"
+        jar="/Users/manuel.rebollo/.android/build-cache/356c5099445d42df304294244b76a47b96577a03/output/jars/classes.jar"
+        jumboMode="true"
+        optimize="true"
+        revision="26.0.0"
+        sha1="45f697922e6f072daa12f8a2995dc77ab03c11da">
+        <dex dex="/Users/manuel.rebollo/AndroidStudioProjects/situm-demo/app/build/intermediates/transforms/dex/debug/folders/1000/10/classes_eb11d6f584c1b7bcce50a540595b649386615572/classes.dex" />
+    </item>
+    <item
+        is-multidex="true"
+        jar="/Users/manuel.rebollo/AndroidStudioProjects/situm-demo/app/build/intermediates/incremental-classes/debug/instant-run-bootstrap.jar"
+        jumboMode="true"
+        optimize="true"
+        revision="26.0.0"
+        sha1="b364a4d1e8a40328f52cc5af457531de08d22948">
+        <dex dex="/Users/manuel.rebollo/AndroidStudioProjects/situm-demo/app/build/intermediates/transforms/dex/debug/folders/1000/10000/instant-run-bootstrap_0c9f681db0f6e42ca2f1897cc626a9096baf7890/classes.dex" />
+    </item>
+    <item
+        is-multidex="true"
+        jar="/Users/manuel.rebollo/.android/build-cache/6b021f9455395b4aad90476f85ad4618de497430/output/jars/classes.jar"
+        jumboMode="true"
+        optimize="true"
+        revision="26.0.0"
+        sha1="d7c42c80f6509b9ea4db28ca7859ffae08ec5741">
+        <dex dex="/Users/manuel.rebollo/AndroidStudioProjects/situm-demo/app/build/intermediates/transforms/dex/debug/folders/1000/10/classes_9279b008926beb077170f6494e192c047d53af3a/classes.dex" />
+    </item>
+    <item
+        is-multidex="true"
+        jar="/Users/manuel.rebollo/.android/build-cache/fd8231c4cbd365bbb71c3148d785dea6bf5bba19/output/jars/classes.jar"
+        jumboMode="true"
+        optimize="true"
+        revision="26.0.0"
+        sha1="efb8cb62d47d157c29d1521daac7eefd4cb881ee">
+        <dex dex="/Users/manuel.rebollo/AndroidStudioProjects/situm-demo/app/build/intermediates/transforms/dex/debug/folders/1000/10/classes_97457fcc9b8525a817674b6709f3f59a8f8be81a/classes.dex" />
+    </item>
+    <item
+        is-multidex="true"
+        jar="/Users/manuel.rebollo/.android/build-cache/d91c0cffb2810687d4501d601683f70559c195c1/output/jars/classes.jar"
+        jumboMode="true"
+        optimize="true"
+        revision="26.0.0"
+        sha1="da27a32db6af8954ee8061537c7d476fcb1df46f">
+        <dex dex="/Users/manuel.rebollo/AndroidStudioProjects/situm-demo/app/build/intermediates/transforms/dex/debug/folders/1000/10/classes_c27ae44aff9ce8e218f6ab445ce127b690a66967/classes.dex" />
+    </item>
+    <item
+        is-multidex="true"
+        jar="/Users/manuel.rebollo/Library/Android/sdk/extras/m2repository/com/android/support/constraint/constraint-layout-solver/1.0.2/constraint-layout-solver-1.0.2.jar"
+        jumboMode="true"
+        optimize="true"
+        revision="26.0.0"
+        sha1="b9cd8fc6bd15cb915735d34535db30ece0c44603">
+        <dex dex="/Users/manuel.rebollo/AndroidStudioProjects/situm-demo/app/build/intermediates/transforms/dex/debug/folders/1000/10/constraint-layout-solver-1.0.2_bad29f5ec40206678a014649c4aa5acf98878617/classes.dex" />
+    </item>
+    <item
+        is-multidex="true"
+        jar="/Users/manuel.rebollo/AndroidStudioProjects/situm-demo/app/build/intermediates/incremental-runtime-classes/debug/instant-run.jar"
+        jumboMode="true"
+        optimize="true"
+        revision="26.0.0"
+        sha1="3be78ebc2706b2e1fe2f12d5726887a92d6c183b">
+        <dex dex="/Users/manuel.rebollo/AndroidStudioProjects/situm-demo/app/build/intermediates/transforms/dex/debug/folders/1000/10000/instant-run_0a37f0d818d9d5131fc7cc58ed3860120c54cd55/classes.dex" />
+    </item>
+    <item
+        is-multidex="true"
+        jar="/Users/manuel.rebollo/.android/build-cache/0b4f0cf879b9660c60559f8b143593532750db38/output/jars/classes.jar"
+        jumboMode="true"
+        optimize="true"
+        revision="26.0.0"
+        sha1="052f5f840f21174a3ecf6544130194e2652cbb73">
+        <dex dex="/Users/manuel.rebollo/AndroidStudioProjects/situm-demo/app/build/intermediates/transforms/dex/debug/folders/1000/10/classes_217d8eec8a4a235c55a7d70d1fce52e42f32b599/classes.dex" />
+    </item>
+    <item
+        is-multidex="true"
+        jar="/Users/manuel.rebollo/.android/build-cache/c8d66fe7c18bb4f8e51b82a7c4c7f3b2e595de31/output/jars/classes.jar"
+        jumboMode="true"
+        optimize="true"
+        revision="26.0.0"
+        sha1="44ee06abb66da30f5855e6bf54574e64cdcd982a">
+        <dex dex="/Users/manuel.rebollo/AndroidStudioProjects/situm-demo/app/build/intermediates/transforms/dex/debug/folders/1000/10/classes_2ccfde4931c9fe7b5ad1ead927c356ffba172133/classes.dex" />
+    </item>
+    <item
+        is-multidex="true"
+        jar="/Users/manuel.rebollo/.android/build-cache/f10d039630670d5600c7e36924f1821356236285/output/jars/classes.jar"
+        jumboMode="true"
+        optimize="true"
+        revision="26.0.0"
+        sha1="150252b33b00274cc868578ade018fda0d43a3eb">
+        <dex dex="/Users/manuel.rebollo/AndroidStudioProjects/situm-demo/app/build/intermediates/transforms/dex/debug/folders/1000/10/classes_f3ea668475a52a30a787436f5479d50363e1014a/classes.dex" />
+    </item>
+    <item
+        is-multidex="true"
+        jar="/Users/manuel.rebollo/.android/build-cache/c197702e6d364fa238387a0262cf748e2c12680b/output/jars/classes.jar"
+        jumboMode="true"
+        optimize="true"
+        revision="26.0.0"
+        sha1="47635644d0d5c103c1dd8360549eb9ba3225c7d3">
+        <dex dex="/Users/manuel.rebollo/AndroidStudioProjects/situm-demo/app/build/intermediates/transforms/dex/debug/folders/1000/10/classes_e9125cbf136731098943129bc5ced39a389dc845/classes.dex" />
+    </item>
+    <item
+        is-multidex="true"
+        jar="/Users/manuel.rebollo/.android/build-cache/dcd1c9bdaa179d40e2d0e71d16340902a21a32fc/output/jars/classes.jar"
+        jumboMode="true"
+        optimize="true"
+        revision="26.0.0"
+        sha1="6ef31f1555bb4cc513ec8d52711365a8b89f3600">
+        <dex dex="/Users/manuel.rebollo/AndroidStudioProjects/situm-demo/app/build/intermediates/transforms/dex/debug/folders/1000/10/classes_8b6f0adcd89d21dac552a15f94682d8375ff4191/classes.dex" />
+    </item>
+    <item
+        is-multidex="true"
+        jar="/Users/manuel.rebollo/Library/Android/sdk/extras/android/m2repository/com/android/support/support-annotations/25.3.1/support-annotations-25.3.1.jar"
+        jumboMode="true"
+        optimize="true"
+        revision="26.0.0"
+        sha1="bf8841d29fa39e077730e7a91222c2ce269fa7c9">
+        <dex dex="/Users/manuel.rebollo/AndroidStudioProjects/situm-demo/app/build/intermediates/transforms/dex/debug/folders/1000/10/support-annotations-25.3.1_50baf1e3a550bc1380cca7e8902da248d852d9ab/classes.dex" />
+    </item>
+    <item
+        is-multidex="true"
+        jar="/Users/manuel.rebollo/.android/build-cache/af08a46177e0c3af3a49fdff36770c38ffe32786/output/jars/classes.jar"
+        jumboMode="true"
+        optimize="true"
+        revision="26.0.0"
+        sha1="4a26a1154d053ab11aaf4c3967c42a4d66390991">
+        <dex dex="/Users/manuel.rebollo/AndroidStudioProjects/situm-demo/app/build/intermediates/transforms/dex/debug/folders/1000/10/classes_96be6dab0a40b2c9b756774e13e785036ee9dc3f/classes.dex" />
+    </item>
+
+</items>
