@@ -14,6 +14,7 @@ fun Poi.getIcon(context: Context): BitmapDescriptor {
     when (this.customFields["icon"]) {
         "android" -> return context.getBitmapDescriptor(R.drawable.ic_android)
         "ios" -> return context.getBitmapDescriptor(R.drawable.ic_iphone)
+        "coffee" -> return context.getBitmapDescriptor(R.drawable.ic_coffee)
         else -> return context.getBitmapDescriptor(R.drawable.ic_place)
     }
 }
