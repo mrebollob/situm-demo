@@ -5,18 +5,22 @@ import android.content.Context
 import android.content.Intent
 import android.graphics.Bitmap
 import android.graphics.Canvas
+import android.graphics.Color
 import android.os.Bundle
 import android.support.v4.app.ActivityCompat
-import android.support.v4.app.FragmentActivity
 import android.support.v4.content.ContextCompat
+import android.support.v7.app.AppCompatActivity
+import android.support.v7.widget.Toolbar
 import android.util.Log
 import com.google.android.gms.maps.CameraUpdateFactory
 import com.google.android.gms.maps.GoogleMap
 import com.google.android.gms.maps.OnMapReadyCallback
 import com.google.android.gms.maps.SupportMapFragment
 import com.google.android.gms.maps.model.*
+import com.mrebollob.situmdemo.utils.bindView
 import com.mrebollob.situmdemo.utils.toast
 import es.situm.sdk.SitumSdk
+import es.situm.sdk.directions.DirectionsRequest
 import es.situm.sdk.error.Error
 import es.situm.sdk.location.LocationListener
 import es.situm.sdk.location.LocationManager
@@ -25,18 +29,25 @@ import es.situm.sdk.location.LocationStatus
 import es.situm.sdk.model.cartography.Building
 import es.situm.sdk.model.cartography.Floor
 import es.situm.sdk.model.cartography.Poi
+import es.situm.sdk.model.cartography.Point
+import es.situm.sdk.model.directions.Route
 import es.situm.sdk.model.location.Location
 import es.situm.sdk.utils.Handler
 
 
-class MapsActivity : FragmentActivity(), OnMapReadyCallback {
+class MapsActivity : AppCompatActivity(), OnMapReadyCallback {
 
     private val TAG = "MapsActivity"
     private val BUILDING_ID = "1843"
+    val toolbar: Toolbar by bindView(R.id.toolbar)
+
     private val GIGIGO = LatLng(40.446002, -3.627503)
     private var map: GoogleMap? = null
     private var mapImage: Bitmap? = null
     private var myLocationMarker: Marker? = null
+    private var currentLocation: Location? = null
+    private var poiMarkers: MutableList<Marker> = ArrayList()
+    private var route: Polyline? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -44,11 +55,21 @@ class MapsActivity : FragmentActivity(), OnMapReadyCallback {
         val mapFragment = supportFragmentManager
                 .findFragmentById(R.id.map) as SupportMapFragment
         mapFragment.getMapAsync(this)
+
+
+        initToolbar()
+    }
+
+    private fun initToolbar() {
+        setSupportActionBar(toolbar)
+        supportActionBar?.setDisplayHomeAsUpEnabled(true)
+        supportActionBar?.setDisplayShowHomeEnabled(true)
+        toolbar.setNavigationOnClickListener({ onBackPressed() })
     }
 
     override fun onResume() {
         super.onResume()
-        startPositioning()
+//        startPositioning()
     }
 
     override fun onPause() {
@@ -59,10 +80,17 @@ class MapsActivity : FragmentActivity(), OnMapReadyCallback {
     override fun onMapReady(googleMap: GoogleMap) {
         map = googleMap
         map?.moveCamera(CameraUpdateFactory.newLatLngZoom(GIGIGO, 20f))
-
+        map?.setOnMarkerClickListener {
+            if (it.tag is Poi) {
+                val poi = it.tag as Poi
+                navigateToPoi(poi.position)
+            }
+            false
+        }
 
         val style = MapStyleOptions.loadRawResourceStyle(this, R.raw.mapstyle)
         map?.setMapStyle(style)
+        map?.uiSettings?.isMapToolbarEnabled = false
 
 
         getBuilding()
@@ -78,10 +106,13 @@ class MapsActivity : FragmentActivity(), OnMapReadyCallback {
 
                     if (BUILDING_ID == building.identifier) {
                         displayFloorImage(building)
+                        displayPois(building)
+                        startPositioning()
                     }
                 }
 
                 if (buildings.isEmpty()) {
+                    toast("You have no buildings. Create one in the Dashboard")
                     Log.e(TAG, "onSuccess: you have no buildings. Create one in the Dashboard")
                 }
             }
@@ -103,7 +134,6 @@ class MapsActivity : FragmentActivity(), OnMapReadyCallback {
                         Log.i(TAG, "Image loaded")
                         mapImage = bitmap
                         showGroundOverlay(building, floor.scale.toFloat(), bitmap)
-                        displayPois(building)
                     }
 
                     override fun onFailure(error: Error) {
@@ -121,19 +151,22 @@ class MapsActivity : FragmentActivity(), OnMapReadyCallback {
     private fun displayPois(building: Building) {
         SitumSdk.communicationManager().fetchIndoorPOIsFromBuilding(building, object : Handler<Collection<Poi>> {
             override fun onSuccess(pois: Collection<Poi>) {
-                map?.clear()
-
+                poiMarkers = ArrayList()
                 for (poi in pois) {
                     val point = LatLng(poi.coordinate.latitude, poi.coordinate.longitude)
-                    map?.addMarker(MarkerOptions()
-                            .position(point))
+                    map?.let {
+                        val marker = it.addMarker(MarkerOptions()
+                                .title(poi.name)
+                                .position(point))
+                        marker.tag = poi
+                        poiMarkers.add(marker)
+                    }
                 }
             }
 
             override fun onFailure(error: Error?) {
                 Log.e(TAG, "onFailure: fetching floors: " + error)
             }
-
         })
     }
 
@@ -174,6 +207,7 @@ class MapsActivity : FragmentActivity(), OnMapReadyCallback {
         override fun onLocationChanged(location: Location) {
             Log.i(TAG, "onLocationChanged() called with: location = [$location]")
 
+            currentLocation = location
             val myLocation = LatLng(location.coordinate.latitude, location.coordinate.longitude)
 
             myLocationMarker?.remove()
@@ -194,6 +228,64 @@ class MapsActivity : FragmentActivity(), OnMapReadyCallback {
                 LocationManager.Code.MISSING_LOCATION_PERMISSION -> requestLocationPermission()
                 LocationManager.Code.LOCATION_DISABLED -> showLocationSettings()
             }
+        }
+    }
+
+    private fun navigateToPoi(point: Point) {
+
+        if (currentLocation != null) {
+            SitumSdk.directionsManager().requestDirections(DirectionsRequest.Builder()
+                    .from(currentLocation as Location)
+                    .isAccessible(false)
+                    .to(point)
+                    .build(),
+                    object : Handler<Route> {
+                        override fun onSuccess(route: Route) {
+                            drawRoute(route.points)
+                        }
+
+                        override fun onFailure(error: Error?) {
+                            Log.e(TAG, "onFailure: request directions: " + error)
+                        }
+
+                    })
+        }
+    }
+
+    private fun drawRoute(points: List<Point>) {
+
+        if (map == null) {
+            return
+        }
+
+        if (points.size < 2) {
+            return
+        }
+
+        hidePois()
+        route?.remove()
+
+        val options = PolylineOptions()
+        options.color(Color.parseColor("#CC0000FF"))
+        options.width(5f)
+        options.visible(true)
+
+        for (point in points) {
+            options.add(LatLng(point.coordinate.latitude, point.coordinate.longitude))
+        }
+
+        route = map?.addPolyline(options)
+    }
+
+    private fun hidePois() {
+        for (poiMarker in poiMarkers) {
+            poiMarker.isVisible = false
+        }
+    }
+
+    private fun showPois() {
+        for (poiMarker in poiMarkers) {
+            poiMarker.isVisible = true
         }
     }
 
