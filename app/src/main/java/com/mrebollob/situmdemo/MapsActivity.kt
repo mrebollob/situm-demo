@@ -10,6 +10,7 @@ import android.support.v4.app.ActivityCompat
 import android.support.v7.app.AppCompatActivity
 import android.support.v7.widget.Toolbar
 import android.util.Log
+import android.widget.ProgressBar
 import android.widget.TextView
 import com.google.android.gms.maps.CameraUpdateFactory
 import com.google.android.gms.maps.GoogleMap
@@ -40,6 +41,7 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback {
     val toolbar: Toolbar by bindView(R.id.toolbar)
     val titleTextView: TextView by bindView(R.id.title)
     val descriptionTextView: TextView by bindView(R.id.description)
+    val loadingView: ProgressBar by bindView(R.id.loading_view)
 
     private val GIGIGO = LatLng(40.446002, -3.627503)
     private var map: GoogleMap? = null
@@ -81,7 +83,7 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback {
         map = googleMap
         map?.moveCamera(CameraUpdateFactory.newLatLngZoom(GIGIGO, 20f))
         map?.setOnMarkerClickListener {
-            if (it.tag is Poi) {
+            if (it.tag is Poi && loadingView.isNotVisible()) {
                 val poi = it.tag as Poi
                 titleTextView.text = poi.name
                 navigateToPoi(poi.position)
@@ -232,6 +234,7 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback {
     }
 
     private fun navigateToPoi(point: Point) {
+        loadingView.visible()
 
         if (currentLocation != null) {
             SitumSdk.directionsManager().requestDirections(DirectionsRequest.Builder()
@@ -241,10 +244,13 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback {
                     .build(),
                     object : Handler<Route> {
                         override fun onSuccess(route: Route) {
+                            loadingView.gone()
                             drawRoute(route.points)
                         }
 
-                        override fun onFailure(error: Error?) {
+                        override fun onFailure(error: Error) {
+                            loadingView.gone()
+                            toast("Error: " + error.message)
                             Log.e(TAG, "onFailure: request directions: " + error)
                         }
 
