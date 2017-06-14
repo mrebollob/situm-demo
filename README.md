@@ -1,2 +1,13 @@
-# situm-demo
-Situm demo android app
+# Situm demo
+This is a simple app to test situm sdk.
+
+<img src="./art/screenshot1.png" width="30%"/>
+<img src="./art/screenshot2.png" width="30%"/>
+
+## Usage
+1. **Config your api key in AndroidManifest.xml.**
+2. **Set your building id in MapsActivity.kt.**
+
+## Situm doc
+* [situm.es/developers](https://situm.es/en/developers)
+* [Javadoc](http://developers.situm.es/sdk_documentation/android/javadoc/2.5.0/)
