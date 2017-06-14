@@ -36,10 +36,10 @@
 
         <meta-data
             android:name="es.situm.sdk.API_USER"
-            android:value="manuel.rebollo@gigigo.com" />
+            android:value="@string/situm_api_user" />
         <meta-data
             android:name="es.situm.sdk.API_KEY"
-            android:value="496f9bd6e699bde35f9c9af4e04bbc6812c4d18f6afaae65ad7e2c9c9c8a380e" />
+            android:value="@string/situm_api_key" />
         <meta-data
             android:name="com.google.android.geo.API_KEY"
             android:value="@string/google_maps_key" />

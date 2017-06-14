@@ -1,6 +1,8 @@
 apply plugin: 'com.android.application'
 apply plugin: 'kotlin-android'
 
+def STRING = "string"
+
 android {
     compileSdkVersion 25
     buildToolsVersion "26.0.0"
@@ -10,6 +12,12 @@ android {
         targetSdkVersion 25
         versionCode 1
         versionName "1.0"
+
+        def props = new Properties()
+        file("../keys.properties").withInputStream { props.load(it) }
+
+        resValue STRING, "situm_api_user", props.getProperty("SITUM_API_USER")
+        resValue STRING, "situm_api_key", props.getProperty("SITUM_API_KEY")
 
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
     }
