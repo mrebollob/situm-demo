@@ -4,21 +4,19 @@ import android.Manifest
 import android.content.Context
 import android.content.Intent
 import android.graphics.Bitmap
-import android.graphics.Canvas
 import android.graphics.Color
 import android.os.Bundle
 import android.support.v4.app.ActivityCompat
-import android.support.v4.content.ContextCompat
 import android.support.v7.app.AppCompatActivity
 import android.support.v7.widget.Toolbar
 import android.util.Log
+import android.widget.TextView
 import com.google.android.gms.maps.CameraUpdateFactory
 import com.google.android.gms.maps.GoogleMap
 import com.google.android.gms.maps.OnMapReadyCallback
 import com.google.android.gms.maps.SupportMapFragment
 import com.google.android.gms.maps.model.*
-import com.mrebollob.situmdemo.utils.bindView
-import com.mrebollob.situmdemo.utils.toast
+import com.mrebollob.situmdemo.utils.*
 import es.situm.sdk.SitumSdk
 import es.situm.sdk.directions.DirectionsRequest
 import es.situm.sdk.error.Error
@@ -40,6 +38,8 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback {
     private val TAG = "MapsActivity"
     private val BUILDING_ID = "1843"
     val toolbar: Toolbar by bindView(R.id.toolbar)
+    val titleTextView: TextView by bindView(R.id.title)
+    val descriptionTextView: TextView by bindView(R.id.description)
 
     private val GIGIGO = LatLng(40.446002, -3.627503)
     private var map: GoogleMap? = null
@@ -83,9 +83,18 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback {
         map?.setOnMarkerClickListener {
             if (it.tag is Poi) {
                 val poi = it.tag as Poi
+                titleTextView.text = poi.name
                 navigateToPoi(poi.position)
+                hidePois()
+                it.isVisible = true
             }
             false
+        }
+
+        map?.setOnMapClickListener {
+            titleTextView.text = ""
+            route?.remove()
+            showPois()
         }
 
         val style = MapStyleOptions.loadRawResourceStyle(this, R.raw.mapstyle)
@@ -103,6 +112,8 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback {
                 Log.d(TAG, "onSuccess: Your buildings: ")
                 for (building in buildings) {
                     Log.i(TAG, "onSuccess: " + building.identifier + " - " + building.name)
+
+                    descriptionTextView.text = building.name
 
                     if (BUILDING_ID == building.identifier) {
                         displayFloorImage(building)
@@ -153,11 +164,11 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback {
             override fun onSuccess(pois: Collection<Poi>) {
                 poiMarkers = ArrayList()
                 for (poi in pois) {
-                    val point = LatLng(poi.coordinate.latitude, poi.coordinate.longitude)
                     map?.let {
                         val marker = it.addMarker(MarkerOptions()
-                                .title(poi.name)
-                                .position(point))
+                                .position(poi.toLatLng())
+                                .icon(poi.getIcon(this@MapsActivity)))
+
                         marker.tag = poi
                         poiMarkers.add(marker)
                     }
@@ -193,26 +204,15 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback {
         SitumSdk.locationManager().removeUpdates(locationListener)
     }
 
-    private fun getBitmapDescriptor(id: Int): BitmapDescriptor {
-        val vectorDrawable = ContextCompat.getDrawable(this@MapsActivity, id)
-        val size = 70
-        vectorDrawable.setBounds(0, 0, size, size)
-        val bm = Bitmap.createBitmap(size, size, Bitmap.Config.ARGB_8888)
-        val canvas = Canvas(bm)
-        vectorDrawable.draw(canvas)
-        return BitmapDescriptorFactory.fromBitmap(bm)
-    }
-
     private val locationListener = object : LocationListener {
         override fun onLocationChanged(location: Location) {
             Log.i(TAG, "onLocationChanged() called with: location = [$location]")
 
             currentLocation = location
-            val myLocation = LatLng(location.coordinate.latitude, location.coordinate.longitude)
 
             myLocationMarker?.remove()
             myLocationMarker = map?.addMarker(MarkerOptions()
-                    .position(myLocation)
+                    .position(location.toLatLng())
                     .icon(getBitmapDescriptor(R.drawable.ic_my_location)))
 
         }
@@ -262,16 +262,13 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback {
             return
         }
 
-        hidePois()
-        route?.remove()
-
         val options = PolylineOptions()
         options.color(Color.parseColor("#CC0000FF"))
         options.width(5f)
         options.visible(true)
 
         for (point in points) {
-            options.add(LatLng(point.coordinate.latitude, point.coordinate.longitude))
+            options.add(point.toLatLng())
         }
 
         route = map?.addPolyline(options)
