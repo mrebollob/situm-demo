@@ -2,7 +2,8 @@
 This is a simple app to test situm sdk.
 
 <img src="./art/screenshot1.png" width="30%"/>
-<img src="./art/screenshot2.png" width="30%"/>
+<img src="./art/screenshot2.png" width="30%" style="float: right;"/>
+<img src="./art/screenshot3.png" width="30%"/>
 
 ## Usage
 1. **Config your api key in AndroidManifest.xml.**
