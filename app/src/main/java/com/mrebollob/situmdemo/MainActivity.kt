@@ -39,7 +39,7 @@ class MainActivity : AppCompatActivity() {
         try {
             val LaunchIntent = packageManager.getLaunchIntentForPackage(appPackageName)
             startActivity(LaunchIntent)
-        } catch (anfe: ActivityNotFoundException) {
+        } catch (e: Exception) {
             try {
                 startActivity(Intent(Intent.ACTION_VIEW, Uri.parse("market://details?id=" + appPackageName)))
             } catch (anfe: ActivityNotFoundException) {
