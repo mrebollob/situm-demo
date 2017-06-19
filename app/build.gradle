@@ -1,7 +1,11 @@
 apply plugin: 'com.android.application'
 apply plugin: 'kotlin-android'
+apply plugin: "applivery-plugin"
 
 def STRING = "string"
+
+def props = new Properties()
+file("../keys.properties").withInputStream { props.load(it) }
 
 android {
     compileSdkVersion 25
@@ -12,9 +16,6 @@ android {
         targetSdkVersion 25
         versionCode 1
         versionName "1.0"
-
-        def props = new Properties()
-        file("../keys.properties").withInputStream { props.load(it) }
 
         resValue STRING, "situm_api_user", props.getProperty("SITUM_API_USER")
         resValue STRING, "situm_api_key", props.getProperty("SITUM_API_KEY")
@@ -49,6 +50,8 @@ dependencies {
     })
     testCompile 'junit:junit:4.12'
 }
-repositories {
-    mavenCentral()
+
+applivery {
+    appId = "594778fee8cccb591f9e2349"
+    apiKey = props.getProperty("APPLIVERY_API_KEY")
 }
