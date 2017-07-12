@@ -131,7 +131,7 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback {
 
             override fun onFailure(error: Error) {
                 Log.e(TAG, "onFailure:" + error)
-                toast("Error: " + error.message)
+                showError(error.message)
             }
         })
     }
@@ -149,12 +149,14 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback {
 
                     override fun onFailure(error: Error) {
                         Log.e(TAG, "onFailure: fetching floor map: " + error)
+                        showError(error.message)
                     }
                 })
             }
 
             override fun onFailure(error: Error) {
                 Log.e(TAG, "onFailure: fetching floors: " + error)
+                showError(error.message)
             }
         })
     }
@@ -175,8 +177,9 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback {
                 }
             }
 
-            override fun onFailure(error: Error?) {
+            override fun onFailure(error: Error) {
                 Log.e(TAG, "onFailure: fetching floors: " + error)
+                showError(error.message)
             }
         })
     }
@@ -194,6 +197,7 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback {
 
     private fun startPositioning() {
 
+        loadingView.visible()
         val locationRequest = LocationRequest.Builder()
                 .buildingIdentifier(BUILDING_ID)
                 .build()
@@ -207,6 +211,7 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback {
     private val locationListener = object : LocationListener {
         override fun onLocationChanged(location: Location) {
             Log.i(TAG, "onLocationChanged() called with: location = [$location]")
+            loadingView.gone()
 
             currentLocation = location
 
@@ -222,7 +227,9 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback {
         }
 
         override fun onError(error: Error) {
+            loadingView.gone()
             Log.e(TAG, "onError() called with: error = [$error]")
+            showError(error.message)
 
             when (error.code) {
                 LocationManager.Code.MISSING_LOCATION_PERMISSION -> requestLocationPermission()
@@ -248,8 +255,8 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback {
 
                         override fun onFailure(error: Error) {
                             loadingView.gone()
-                            toast("Error: " + error.message)
                             Log.e(TAG, "onFailure: request directions: " + error)
+                            showError(error.message)
                         }
 
                     })
@@ -297,6 +304,10 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback {
 
     private fun requestLocationPermission() {
         ActivityCompat.requestPermissions(this, arrayOf(Manifest.permission.ACCESS_COARSE_LOCATION), 0)
+    }
+
+    private fun showError(error: String) {
+        toast(error)
     }
 
     companion object Navigator {
