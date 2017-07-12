@@ -45,7 +45,6 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback {
 
     private val GIGIGO = LatLng(40.446002, -3.627503)
     private var map: GoogleMap? = null
-    private var mapImage: Bitmap? = null
     private var myLocationMarker: Marker? = null
     private var currentLocation: Location? = null
     private var poiMarkers: MutableList<Marker> = ArrayList()
@@ -145,7 +144,6 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback {
                 SitumSdk.communicationManager().fetchMapFromFloor(floor, object : Handler<Bitmap> {
                     override fun onSuccess(bitmap: Bitmap) {
                         Log.i(TAG, "Image loaded")
-                        mapImage = bitmap
                         showGroundOverlay(building, floor.scale.toFloat(), bitmap)
                     }
 
