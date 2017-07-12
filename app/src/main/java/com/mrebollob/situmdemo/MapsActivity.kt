@@ -101,7 +101,7 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback {
         val style = MapStyleOptions.loadRawResourceStyle(this, R.raw.mapstyle)
         map?.setMapStyle(style)
         map?.uiSettings?.isMapToolbarEnabled = false
-
+        map?.uiSettings?.isTiltGesturesEnabled = false
 
         getBuilding()
     }
