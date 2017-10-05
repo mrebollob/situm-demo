@@ -11,9 +11,9 @@ import com.mrebollob.situmdemo.utils.bindView
 
 class MainActivity : AppCompatActivity() {
 
-    val mapButton: Button by bindView(R.id.map_button)
-    val mappingAppButton: Button by bindView(R.id.mapping_app_button)
-    val situmLinkButton: Button by bindView(R.id.situm_link_button)
+    private val mapButton: Button by bindView(R.id.map_button)
+    private val mappingAppButton: Button by bindView(R.id.mapping_app_button)
+    private val situmLinkButton: Button by bindView(R.id.situm_link_button)
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -37,8 +37,8 @@ class MainActivity : AppCompatActivity() {
         val appPackageName = "es.situm.maps"
 
         try {
-            val LaunchIntent = packageManager.getLaunchIntentForPackage(appPackageName)
-            startActivity(LaunchIntent)
+            val launchIntent = packageManager.getLaunchIntentForPackage(appPackageName)
+            startActivity(launchIntent)
         } catch (e: Exception) {
             try {
                 startActivity(Intent(Intent.ACTION_VIEW, Uri.parse("market://details?id=" + appPackageName)))

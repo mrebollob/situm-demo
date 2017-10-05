@@ -2,7 +2,8 @@ apply plugin: 'com.android.application'
 apply plugin: 'kotlin-android'
 apply plugin: "applivery-plugin"
 
-def STRING = "string"
+def string = "string"
+def STRING = "String"
 
 def props = new Properties()
 file("../keys.properties").withInputStream { props.load(it) }
@@ -14,11 +15,13 @@ android {
         applicationId "com.mrebollob.situmdemo"
         minSdkVersion 16
         targetSdkVersion 25
-        versionCode 1
-        versionName "1.0"
+        versionCode computeVersionCode()
+        versionName "1.0.2"
 
-        resValue STRING, "situm_api_user", props.getProperty("SITUM_API_USER")
-        resValue STRING, "situm_api_key", props.getProperty("SITUM_API_KEY")
+        resValue string, "situm_api_user", props.getProperty("SITUM_API_USER")
+        resValue string, "situm_api_key", props.getProperty("SITUM_API_KEY")
+        buildConfigField STRING, "APPLIVERY_APP_ID", "\"594778fee8cccb591f9e2349\""
+        buildConfigField STRING, "APPLIVERY_API_KEY", "\"" + props.getProperty("APPLIVERY_API_KEY") + "\""
 
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
     }
@@ -45,6 +48,8 @@ dependencies {
     compile 'com.android.support:design:25.3.1'
     compile 'com.google.android.gms:play-services-maps:11.0.0'
 
+    compile 'com.applivery:applivery-android-sdk:1.1.0'
+
     androidTestCompile('com.android.support.test.espresso:espresso-core:2.2.2', {
         exclude group: 'com.android.support', module: 'support-annotations'
     })
@@ -54,4 +59,16 @@ dependencies {
 applivery {
     appId = "594778fee8cccb591f9e2349"
     apiKey = props.getProperty("APPLIVERY_API_KEY")
+}
+
+/**
+ * Gets the commit number from the current Git commit. E.g. 538
+ */
+def computeVersionCode() {
+    def stdout = new ByteArrayOutputStream()
+    exec {
+        commandLine 'git', 'rev-list', '--count', 'HEAD'
+        standardOutput = stdout
+    }
+    return stdout.toString().trim().toInteger()
 }

@@ -3,4 +3,8 @@
     <string name="show_map">Show Map</string>
     <string name="open_mapping_app">Open mapping app</string>
     <string name="situm_es">situm.es</string>
+
+
+    <string name="appliveryUpdate">Actualización!</string>
+    <string name="appliveryMustUpdateAppLocked">Es necesario que actualices situm demo.</string>
 </resources>
